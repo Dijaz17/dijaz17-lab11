@@ -16,7 +16,33 @@ public class Lab11_Tests {
         Lab11_Thread threadB = new Lab11_Thread("B1", 100);
 
         threadA.start();
+
+        try {
+            System.out.println("Joining thread A");
+            threadA.join();
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted while joining a thread...");
+        }
+
+        int resultA = threadA.getData().size();
+        int expected = 100;
+
+        assertEquals(resultA, expected);
+
         threadB.start();
+
+        try {
+            System.out.println("Joining thread B");
+            threadB.join();
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted while joining a thread...");
+        }
+
+        
+        int resultB = threadB.getData().size();
+        expected = 200;
+
+        assertEquals(resultB, expected);
 
     }
 
@@ -29,10 +55,15 @@ public class Lab11_Tests {
         Lab11_Thread threadA = new Lab11_Thread("A2", 500);
         Lab11_Thread threadB = new Lab11_Thread("B2", 500);
 
+        threadA.setData(new ArrayList<>()); // static data still had 200 entries from previous test
+
         threadA.start();
         threadB.start();
         try {
-            Thread.sleep(500); 
+            Thread.sleep(500);
+            boolean result = (threadA.getData().size() > 10); 
+            boolean expected = true;
+            assertEquals(expected, result);
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -64,6 +64,9 @@ public class Lab11_Tests {
             boolean result = (threadA.getData().size() > 10); 
             boolean expected = true;
             assertEquals(expected, result);
+
+            threadA.join(); 
+            threadB.join(); // ensure threads A and B are complete before moving onto next test
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -79,6 +82,7 @@ public class Lab11_Tests {
         Lab11_Thread threadA = new Lab11_Thread("A3", 10);
         Lab11_Thread threadB = new Lab11_Thread("B3", 10);
 
+        threadA.setData(new ArrayList<>()); // static data still has entries from previous test
         threadA.start();
         
         try {
@@ -86,6 +90,11 @@ public class Lab11_Tests {
         } catch (Exception e){
             e.printStackTrace();
         }
+
+        int result = threadA.getData().size();
+        int expected = 10;
+
+        assertEquals(expected, result);
         
         threadB.start();
     }
